@@ -14,6 +14,7 @@ Setting up the project
   * Clone the repository to your own computer. This requires git to be installed on your system. For cloning, you can use your favorite git tool or the following command:
 
         git clone https://github.com/supernelis/softwarewolves-java-player.git 
+        
 
 2. Import the project in your favorite editor.
   - Eclipse: New project from existing source.
