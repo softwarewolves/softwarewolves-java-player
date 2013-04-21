@@ -15,46 +15,105 @@ import org.jivesoftware.smackx.muc.InvitationListener;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.SubjectUpdatedListener;
 
-
+/**
+ * *************************************************************************
+ * 
+ * 
+ * 
+ * @author nelis
+ * *************************************************************************
+ */
 public class BotXmppSupport {
 
 	private XMPPConnection connection;
-	private final String gc;
-	private final String pwd;
-	private MultiUserChat room;
-	private final String username;
-	private BotXmppSupportEvents events;
-	private String xmppserver;
+	private final String gameCoordinator;
+	private final String botPwd;
+	private MultiUserChat gameChatRoom;
+	private final String botUser;
+	/**
+	 * The listener to the events this support object produces when certain XMPP
+	 * messages are received.
+	 * 
+	 */
+	private BotXmppSupportEvents eventListener;
+	private String xmppServer;
 	
-	public BotXmppSupport(String username, String password, String gamecoordinator, String xmppserver) throws XMPPException {
-		this.username = username;
-		pwd = password;
-		this.gc = gamecoordinator;
+	/**
+	 * *************************************************************************
+	 * Constructs a new xmpp support object and initializes the connection
+	 * 
+	 * @param botUsername The username of the bot to play with
+	 * @param botPassword The password of the bot to play with
+	 * @param gamecoordinator The gamecoordinator of the softwarewolves
+	 * @param xmppserver The xmpp server on which the game is played
+	 * @throws XMPPException
+	 **************************************************************************
+	 */
+	public BotXmppSupport(String botUsername, String botPassword, String gamecoordinator, String xmppserver) throws XMPPException {
+		this.botUser = botUsername;
+		botPwd = botPassword;
+		this.gameCoordinator = gamecoordinator;
 		this.setXmppserver(xmppserver);
 		
 		initialize();
 	}
 	
+	/**
+	 * *************************************************************************
+	 * 
+	 * @return The username of the bot
+	 **************************************************************************
+	 */
 	public String getUsername() {
-		return username;
+		return botUser;
 	}
 	
-	public void initialize() throws XMPPException{
+	/**
+	 * *************************************************************************
+	 * Initialize this bot by setting up a connection with the server and 
+	 * logging in.
+	 * 
+	 * @throws XMPPException
+	 **************************************************************************
+	 */
+	
+	protected void initialize() throws XMPPException{
 		connection = new XMPPConnection(getXmppserver());
 		connection.connect();		
 		connection.login(getUsername(), getPassword());
 	}
 	
+	/**
+	 * *************************************************************************
+	 * Return a JID for a given name
+	 * 
+	 * @param name The name of the user
+	 * @return the jid in the format name@xmppserver
+	 **************************************************************************
+	 */
 	private String getJID(String name) {
 		return name + "@" + getXmppserver();
 		
 	}
 	
+	/**
+	 * *************************************************************************
+	 * @return the password of the bot user
+	 **************************************************************************
+	 */
 	private String getPassword() {
-		return pwd;
+		return botPwd;
 		
 	}
 	
+	/**
+	 * *************************************************************************
+	 * Listen to invites and join the room when invited. 
+	 * 
+	 * This is based on MUC (Multi User Chat).
+	 * 
+	 **************************************************************************
+	 */
 	public void listenToInvites() {
 			MultiUserChat.addInvitationListener(connection, new InvitationListener() {
 				
@@ -62,39 +121,44 @@ public class BotXmppSupport {
 				public void invitationReceived(Connection connection, String roomName, String inviter,
 						String reason, String password, Message arg5) {
 						
-						room = new MultiUserChat(connection,roomName);
+						gameChatRoom = new MultiUserChat(connection,roomName);
 						try {
+							// Make sure not to receive the full room history of messages
 							DiscussionHistory history = new DiscussionHistory();
 						     history.setMaxStanzas(0);
 							
-							room.join(username,"",history,SmackConfiguration.getPacketReplyTimeout());
-							events.joinedVillage(inviter);
+						    // join
+							gameChatRoom.join(botUser,"",history,SmackConfiguration.getPacketReplyTimeout());
+							// warn the bot you have jointed
+							eventListener.joinedVillage(inviter,gameChatRoom.getRoom());
 							
+							// stop lissening for invites
 							MultiUserChat.removeInvitationListener(connection, this);
-							room.addMessageListener(new PacketListener() {
+							
+							// add a message listener to receive the messages from the room
+							gameChatRoom.addMessageListener(new PacketListener() {
 								
 								@Override
 								public void processPacket(Packet arg0) {
 									Message m = ((Message) arg0);
+									// exclude the message send by the bot itself
 									if(!m.getFrom().endsWith(getUsername())){
-										events.messageReceived(m);
+										// warn the bot a message has been received
+										eventListener.messageReceivedFromVillage(m);
 									}
 								}
 							});
 							
-							room.addSubjectUpdatedListener(new SubjectUpdatedListener() {
-								
+							// add a subject change listener to know when the subject changes
+							gameChatRoom.addSubjectUpdatedListener(new SubjectUpdatedListener() {
 								@Override
 								public void subjectUpdated(String arg0, String arg1) {
-									events.subjectChangeReceived(arg0,arg1);
+									eventListener.subjectChangeReceivedFromVillage(arg0,arg1);
 									
 								}
 							});
-						
 							
-	//						room.addSubjectUpdatedListener(listener)
 						} catch (XMPPException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					
@@ -103,13 +167,21 @@ public class BotXmppSupport {
 			
 		}
 	
+	/**
+	 * *************************************************************************
+	 * Ask to start a new game to the game coordinator
+	 * 
+	 * @param events The object that will capture the game events
+	 * @throws XMPPException
+	 **************************************************************************
+	 */
 	public void askForNewGame(final BotXmppSupportEvents events) throws XMPPException{
-		this.events = events;
+		this.eventListener = events;
 		ChatManager chatmanager = connection.getChatManager();
-		Chat newChat = chatmanager.createChat(getJID(gc), new MessageListener() {
+		Chat newChat = chatmanager.createChat(getJID(gameCoordinator), new MessageListener() {
 		    public void processMessage(Chat chat, Message message) {
 		        try {
-					events.messageReceived(chat, message);
+					events.chatMessageReceived(chat, message);
 				} catch (XMPPException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -126,7 +198,7 @@ public class BotXmppSupport {
 					@Override
 					public void processMessage(Chat chat, Message m) {
 						try {
-							events.messageReceived(chat,m);
+							events.chatMessageReceived(chat,m);
 						} catch (XMPPException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -139,9 +211,17 @@ public class BotXmppSupport {
 		newChat.sendMessage("I want to play");	
 	}
 	
+	/**
+	 * *************************************************************************
+	 * Send a message to the whole village
+	 * 
+	 * @param message The message to send
+	 **************************************************************************
+	 */
+	
 	public void sendMessageToVillage(String message) {
 		try {
-			room.sendMessage(message);
+			gameChatRoom.sendMessage(message);
 		} catch (XMPPException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,20 +229,23 @@ public class BotXmppSupport {
 		
 	}
 	
+	
 	/***************************************************************************
 	 * Returns the XMPP server for this game
 	 * 
 	 * @return the xmppserver
 	 ***************************************************************************/
 	public String getXmppserver() {
-		return xmppserver;
+		return xmppServer;
 	}
+	
+	
 	/***************************************************************************
 	 * Sets the XMPP server for this game
 	 * @param xmppserver the xmppserver to set
 	 ***************************************************************************/
-	public void setXmppserver(String xmppserver) {
-		this.xmppserver = xmppserver;
+	protected void setXmppserver(String xmppserver) {
+		this.xmppServer = xmppserver;
 	}
 
 }

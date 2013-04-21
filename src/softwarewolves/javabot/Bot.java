@@ -7,7 +7,6 @@ import org.jivesoftware.smack.packet.Message;
 import softwarewolves.javabot.xmpp.BotXmppSupport;
 import softwarewolves.javabot.xmpp.BotXmppSupportEvents;
 
-
 /**
  * *************************************************************************
  * A simple implementation of a bot in the softwarewolves game. 
@@ -85,9 +84,9 @@ public class Bot implements BotXmppSupportEvents {
 	}
 
 	@Override
-	public void joinedVillage(String mc) {
-		System.out.println("Invited in village by "+mc);
-		this.mc = mc;
+	public void joinedVillage(String masterOfCeremony, String room) {
+		System.out.println("Invited in village by "+masterOfCeremony+" in room "+room);
+		this.mc = masterOfCeremony;
 		support.sendMessageToVillage("Howdy!");
 	}
 
@@ -97,8 +96,8 @@ public class Bot implements BotXmppSupportEvents {
 	}
 
 	@Override
-	public void messageReceived(Chat chat, Message m) throws XMPPException {
-		System.out.println("From "+ m.getFrom() + " received message "+ m.getBody());
+	public void chatMessageReceived(Chat chat, Message m) throws XMPPException {
+		System.out.println("Message: Chat: "+chat.getParticipant() + "from "+ m.getFrom() + " received message "+ m.getBody());
 		
 		if(m.getFrom().equals(mc)){
 			if(m.getBody().startsWith("You are selected as werewolf for this game")){
@@ -114,13 +113,13 @@ public class Bot implements BotXmppSupportEvents {
 	}
 	
 	@Override
-	public void subjectChangeReceived(String subject, String from) {
+	public void subjectChangeReceivedFromVillage(String subject, String from) {
 		System.out.println("Subject: " + subject + " From:  " + from);
 		
 	}
 
 	@Override
-	public void messageReceived(Message m) {
+	public void messageReceivedFromVillage(Message m) {
 		String messageBody = m.getBody();
 		System.out.println(m.getFrom() + ": " + messageBody);
 		
