@@ -9,4 +9,4 @@ More information on the softwarewolves game can be found at : [Softwarewolves do
 Example softwarewolves player in java
 
 
-[1] http://en.wikipedia.org/wiki/XMPP
+[1]: http://en.wikipedia.org/wiki/XMPP
