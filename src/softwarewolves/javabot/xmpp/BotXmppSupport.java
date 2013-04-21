@@ -210,6 +210,7 @@ public class BotXmppSupport {
 		});
 		newChat.sendMessage("I want to play");	
 	}
+
 	
 	/**
 	 * *************************************************************************

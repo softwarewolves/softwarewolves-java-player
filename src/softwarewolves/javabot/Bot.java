@@ -123,12 +123,11 @@ public class Bot implements BotXmppSupportEvents {
 		String messageBody = m.getBody();
 		System.out.println(m.getFrom() + ": " + messageBody);
 		
-//		if(m.getFrom().equals(mc)){		
-			if (messageBody.startsWith("Please vote who should be hanged:")){
-				String[] lines = messageBody.split(":");
-				String[] players = lines[1].split(",");
-				support.sendMessageToVillage("I vote for "+players[0]);	
-			}
-//		}
+		
+		if (messageBody.startsWith("Please vote who should be hanged:")){
+			String[] lines = messageBody.split(":");
+			String[] players = lines[1].split(",");
+			support.sendMessageToVillage("I vote for "+players[0]);	
+		}
 	}
 }
