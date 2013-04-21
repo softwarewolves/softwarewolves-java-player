@@ -8,7 +8,7 @@ More information on the softwarewolves game can be found at : [Softwarewolves do
 Setting up the project
 ---------------------
 
-1. Get the code. With github, there are several possibilities:
+* Get the code. With github, there are several possibilities:
   * Download the project as a zipfile from github (github button somewhere on page). 
   * Fork the project to your own github repository (github button somewhere on page), then clone it. This requires a github account.
   * Clone the repository to your own computer. This requires git to be installed on your system. For cloning, you can use your favorite git tool or the following command:
@@ -17,14 +17,14 @@ Setting up the project
         git clone https://github.com/supernelis/softwarewolves-java-player.git 
 ```
 
-2. Get the project in your favorite editor.
+* Get the project in your favorite editor:
   * for Eclipse addicts: 
-    * New java project
-    * Uncheck the checkbox "Use default location" and point to where you checked out the java code
+      * New java project
+      * Uncheck the checkbox "Use default location" and point to where you checked out the java code
 
-3. Add the smack jar files to your buildpath (all 4 of them)
+* Add the smack jar files to your buildpath (all 4 of them)
 
-4. Run the main method in the class softwaresolves.javabot.Bot
+* Run the main method in the class softwaresolves.javabot.Bot
 
 Smack
 --------------------
