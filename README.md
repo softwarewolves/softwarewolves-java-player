@@ -21,8 +21,16 @@ Setting up the project
 3. Add the smack jar files to your buildpath
 
 
-4. Run the main method in the class softwarewolves.javabot.Bot
+4. Run the main method in the class softwaresolves.javabot.Bot
 
+Smack
+--------------------
+
+This project uses the smack libraries for xmpp. Although it is not considered as good practice, 
+we included the documentation and libraries of this project here to simplify setup and limit the 
+amount of external dependencies.
+
+The included documentation can be found in the <a href="smack_3_2_2">smack</a> subdirectory.
 
 
 
