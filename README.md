@@ -11,6 +11,7 @@ Setting up the project
 1. Get the code. With github, there are several possibilities:
   - Fork the project to your own github repository (github button somewhere on page), then clone it. This requires a github account.
   - Clone the repository to your own computer. This requires git to be installed on your system. For cloning, you can use your favorite git tool or the following command:
+        git clone https://github.com/supernelis/softwarewolves-java-player.git 
   - Download the project as a zipfile from github (github button somewhere on page).
 
 
