@@ -27,11 +27,13 @@ Smack
 --------------------
 
 This project uses the smack libraries for xmpp. Although it is not considered as good practice, 
-we included the documentation and libraries of this project here to simplify setup and limit the 
-amount of external dependencies.
+we included the documentation and libraries of of smack in this git project to simplify setup, limit the 
+amount of external dependencies that can fail and simplify offline working.
 
-The included documentation can be found in the <a href="smack_3_2_2">smack</a> subdirectory in this 
-repository, on the [jive smack documentation][2] website.
+
+- Documentation: <a href="smack_3_2_2/documentation/">Offline</a>, [jive documentation website][2].
+- API: <a href="smack_3_2_2/javadoc/">Offline</a>, [jive javadoc website][3].
 
 [1]: https://github.com/supernelis/softwarewolves-doc
 [2]: http://www.igniterealtime.org/builds/smack/docs/latest/documentation/
+[3]: http://www.igniterealtime.org/builds/smack/docs/latest/javadoc/
