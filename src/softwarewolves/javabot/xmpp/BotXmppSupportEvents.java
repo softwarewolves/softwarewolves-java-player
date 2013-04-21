@@ -1,4 +1,4 @@
-package xmpp;
+package softwarewolves.javabot.xmpp;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;

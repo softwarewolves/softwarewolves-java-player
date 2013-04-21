@@ -1,11 +1,12 @@
-package softwarewolves;
+package softwarewolves.javabot;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
-import xmpp.BotXmppSupport;
-import xmpp.BotXmppSupportEvents;
+import softwarewolves.javabot.xmpp.BotXmppSupport;
+import softwarewolves.javabot.xmpp.BotXmppSupportEvents;
+
 
 /**
  * *************************************************************************
