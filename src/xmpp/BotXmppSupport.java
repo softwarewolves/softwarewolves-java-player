@@ -1,3 +1,4 @@
+package xmpp;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
@@ -17,38 +18,43 @@ import org.jivesoftware.smackx.muc.SubjectUpdatedListener;
 
 public class BotXmppSupport {
 
-	public static final String SERVER = "jabber.org";
 	private XMPPConnection connection;
 	private final String gc;
 	private final String pwd;
 	private MultiUserChat room;
 	private final String username;
 	private BotXmppSupportEvents events;
+	private String xmppserver;
 	
-	public BotXmppSupport(String username, String password, String gamecoordinator) throws XMPPException {
+	public BotXmppSupport(String username, String password, String gamecoordinator, String xmppserver) throws XMPPException {
 		this.username = username;
 		pwd = password;
 		this.gc = gamecoordinator;
+		this.setXmppserver(xmppserver);
 		
 		initialize();
 	}
+	
 	public String getUsername() {
 		return username;
 	}
+	
 	public void initialize() throws XMPPException{
-		connection = new XMPPConnection(SERVER);
+		connection = new XMPPConnection(getXmppserver());
 		connection.connect();		
 		connection.login(getUsername(), getPassword());
 	}
-	private String getJabberName(String name) {
-		// TODO Auto-generated method stub
-		return name + "@" + SERVER;
+	
+	private String getJID(String name) {
+		return name + "@" + getXmppserver();
 		
 	}
+	
 	private String getPassword() {
 		return pwd;
 		
 	}
+	
 	public void listenToInvites() {
 			MultiUserChat.addInvitationListener(connection, new InvitationListener() {
 				
@@ -96,10 +102,11 @@ public class BotXmppSupport {
 			}); 
 			
 		}
-	protected void askForNewGame(final BotXmppSupportEvents events) throws XMPPException{
+	
+	public void askForNewGame(final BotXmppSupportEvents events) throws XMPPException{
 		this.events = events;
 		ChatManager chatmanager = connection.getChatManager();
-		Chat newChat = chatmanager.createChat(getJabberName(gc), new MessageListener() {
+		Chat newChat = chatmanager.createChat(getJID(gc), new MessageListener() {
 		    public void processMessage(Chat chat, Message message) {
 		        try {
 					events.messageReceived(chat, message);
@@ -131,6 +138,7 @@ public class BotXmppSupport {
 		});
 		newChat.sendMessage("I want to play");	
 	}
+	
 	public void sendMessageToVillage(String message) {
 		try {
 			room.sendMessage(message);
@@ -139,6 +147,22 @@ public class BotXmppSupport {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	/***************************************************************************
+	 * Returns the XMPP server for this game
+	 * 
+	 * @return the xmppserver
+	 ***************************************************************************/
+	public String getXmppserver() {
+		return xmppserver;
+	}
+	/***************************************************************************
+	 * Sets the XMPP server for this game
+	 * @param xmppserver the xmppserver to set
+	 ***************************************************************************/
+	public void setXmppserver(String xmppserver) {
+		this.xmppserver = xmppserver;
 	}
 
 }
