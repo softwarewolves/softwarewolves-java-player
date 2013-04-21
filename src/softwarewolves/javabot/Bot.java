@@ -99,17 +99,6 @@ public class Bot implements BotXmppSupportEvents {
 	public void chatMessageReceived(Chat chat, Message m) throws XMPPException {
 		System.out.println("Message: Chat: "+chat.getParticipant() + "from "+ m.getFrom() + " received message "+ m.getBody());
 		
-		if(m.getFrom().equals(mc)){
-			if(m.getBody().startsWith("You are selected as werewolf for this game")){
-				werewolf = true;
-			}
-		
-			if (werewolf && m.getBody().startsWith("Please choose who you want to eat")){
-				String[] lines = m.getBody().split(":");
-				String[] players = lines[1].split(",");
-				chat.sendMessage("I eat "+players[0]);	
-			}
-		}
 	}
 	
 	@Override
@@ -123,11 +112,5 @@ public class Bot implements BotXmppSupportEvents {
 		String messageBody = m.getBody();
 		System.out.println(m.getFrom() + ": " + messageBody);
 		
-		
-		if (messageBody.startsWith("Please vote who should be hanged:")){
-			String[] lines = messageBody.split(":");
-			String[] players = lines[1].split(",");
-			support.sendMessageToVillage("I vote for "+players[0]);	
-		}
 	}
 }

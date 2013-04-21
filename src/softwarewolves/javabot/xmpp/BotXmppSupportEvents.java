@@ -8,11 +8,12 @@ public interface BotXmppSupportEvents {
 	
 	/**
 	 * *************************************************************************
+	 * 
 	 * The bot successfully joined the village. 
 	 * 
 	 * @param mc
 	 * @param room 
-	 **************************************************************************
+	 * *************************************************************************
 	 */
 	
 	public void joinedVillage(String mc, String room);
@@ -29,6 +30,7 @@ public interface BotXmppSupportEvents {
 	
 	/**
 	 * *************************************************************************
+	 * 
 	 * This player received a message
 	 * 
 	 * @param chat
