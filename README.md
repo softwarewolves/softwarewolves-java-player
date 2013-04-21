@@ -13,10 +13,13 @@ Setting up the project
   - Clone the repository to your own computer. This requires git to be installed on your system. For cloning, you can use your favorite git tool or the following command:
   - Download the project as a zipfile from github (github button somewhere on page).
 
+
 2. Import the project in your favorite editor.
   - Eclipse: New project from existing source.
 
+
 3. Add the smack jar files to your buildpath
+
 
 4. Run the main method in the class softwarewolves.javabot.Bot
 
