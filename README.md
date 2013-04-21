@@ -30,8 +30,8 @@ This project uses the smack libraries for xmpp. Although it is not considered as
 we included the documentation and libraries of this project here to simplify setup and limit the 
 amount of external dependencies.
 
-The included documentation can be found in the <a href="smack_3_2_2">smack</a> subdirectory.
-
-
+The included documentation can be found in the <a href="smack_3_2_2">smack</a> subdirectory in this 
+repository, on the [jive smack documentation][2] website.
 
 [1]: https://github.com/supernelis/softwarewolves-doc
+[2]: http://www.igniterealtime.org/builds/smack/docs/latest/documentation/
