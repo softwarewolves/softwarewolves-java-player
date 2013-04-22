@@ -1,7 +1,7 @@
 # Softwarewolves-java-player
 
 
-This is an example bot implementation in java for the softwarewolves game. This player implements the "lazy villager" strategy.
+This is an example implementation of a bot in java for the digital version of the werewolves party game (rebranded to softwarewolves game). The bot does not do much - it implements the lazy villager story.
 
 More information on the softwarewolves game can be found at : [Softwarewolves documentation][1].
 
